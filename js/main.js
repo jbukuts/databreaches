@@ -11,7 +11,7 @@ d3.csv("data/breaches.csv").then(function(data){
 
 	console.log(data.length);
 
-	$("#breach-amount").text(data.length + "Total Breaches");
+	$("#breach-amount").text("There Were "data.length + " Total Breaches");
 
 
 });
