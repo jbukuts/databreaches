@@ -3,11 +3,6 @@
 var width = 960;
 var height = 500;
 
-// D3 Projection
-var projection = d3.geo.albersUsa()
-				   .translate([width/2, height/2])
-				   .scale([1000]);
-
 
 var states_file = [];
 d3.json("data/states_titlecase.json").then(function(data){
@@ -45,8 +40,21 @@ d3.csv("data/breaches.csv").then(function(data){
 	}
 
 	for(var i=0;i<59;i++){
-		console.log(states_file[i].abbreviation + ": "+ states_amount[i]);
+		// console.log(states_file[i].abbreviation + ": "+ states_amount[i]);
 	}
+
+
+	var final_data = {};
+	for(var i=0;i<59;i++){
+		final_data[i] = {amount:states_amount[i],color:"blue"};
+	}
+
+	console.log(final_data);
+
+
+
+
+	uStates.draw("#statesvg",final_data);
 
 	$("#breach-amount").text("There Were " + data.length + " Total Breaches");
 	$("#reason").text('"'+data[getRandom(0,data.length-1)].type+'"');
@@ -60,6 +68,6 @@ function getRandom(lo, hi){
 
 
 
-uStates.draw("#statesvg");
+
 
 
