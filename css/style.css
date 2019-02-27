@@ -1,5 +1,5 @@
 body {
-	background-color: #DDD;
+	background-color: #f9f9f9;
 	font-family: Arial;
 	text-align: center;
 }
@@ -31,4 +31,8 @@ h1 {
 #reason {
 	font-size: 14px;
 	font-style: italic;
+}
+
+path:hover {
+	opacity: 0;
 }
