@@ -1,14 +1,17 @@
+/** general styling **/
 body {
 	background-color: #f9f9f9;
 	font-family: Arial;
 	text-align: center;
 }
 
+/** general styling for any svg **/
+/** ensures is centered **/
 svg {
 	width: 80%;
 	margin: auto;
 }
-
+/** contaniner for all elements **/
 #house {
 	width: 80%;
 	padding: 5px;
@@ -18,21 +21,53 @@ svg {
 	box-shadow: 10px 10px;
 }
 
+/** overall title **/
 h1 {
 	font-size: 50px;
+	font-weight: bold;
+	margin-top: 32px;
 }
 
-/** breaches text **/
-#breach-amount {
-	font-size: 35px;
+/** description of data and source **/
+#description {
+	font-size: 20px;
+	width: 50%;
+	margin: auto;
+	margin-top: 24px;
+}
+
+/** shows total amount of breaches **/
+#breach-title {
+	font-size: 42px;
 	text-align: center;
+	font-weight: bold;
+	margin-top: 50px;
 }
 
+#breach-amount {
+	font-size: 42px;
+	text-align: center;
+	font-weight: bold;
+	margin-top: -20px;
+}
+
+/** randoms reasons for breaches **/
 #reason {
-	font-size: 14px;
+	font-size: 18px;
+	width: 50%;
+	margin: auto;
+	margin-top: 50px;
 	font-style: italic;
 }
 
-path:hover {
-	opacity: 0;
+/** styling for states **/
+.state {
+	stroke: #fff;
+	stroke-width: 1;
 }
+
+.state:hover {
+	opacity: .80;
+}
+
+
