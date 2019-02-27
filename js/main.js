@@ -5,50 +5,25 @@ d3.json("data/states_titlecase.json").then(function(data){
 	//console.log(states_file);
 });
 
-// create array to house how many breaches occurred in each state
-var states_amount  = [];
-for(var i = 0; i<51;i++){
-	states_amount.push(0);
-}
-
-d3.csv("data/breaches.csv").then(function(data){
+d3.csv("data/data_breaches.csv").then(function(data){
 	
-	// load the years in and store into array
-	var years = {};
-	for(var i=0; i < data.length; i++){
-		// where the start of the year is
-		var start = data[i].date.lastIndexOf("/");
-		// the acutal year
-		years[i] = "20"+data[i].date.substring(start+1,data[i].date.length);
-		console.log(years[i]);
-	}
-
-	// count the amount of records lost from all data
-	var records_lost = 0;
-	for(var i=0;i<data.length;i++){
-		// parse int from data
-		var val = parseInt(Number(data[i].records));
-		// if the parsed val is not NaN then add to total
-		if (!isNaN(val)){
-			records_lost += val;
-		}
-	}
-
-	// log the total records lost
-	console.log(records_lost + " RECORDS LOST!");
+	console.log(data);
 	
 	// see the json loaded
 	console.log(states_file);
+
+	// create array to house how many breaches occurred in each state
+	var states_amount  = [];
+	for(var i = 0; i<51;i++){
+		states_amount.push(0);
+	}
 
 	// run through all data
 	for (var i=0; i < data.length; i++) {
 		// run though all the states and check for proper state
 		for (var j=0; j < states_file.length; j++) {
 			// if state is found then increment its place in array
-			if(data[i].location.indexOf(states_file[j].abbreviation) != -1) {
-				states_amount[j] += 1;
-			}
-			else if (data[i].location.indexOf(states_file[j].name) != -1) {
+			if (data[i].State == states_file[j].name) {
 				states_amount[j] += 1;
 			}
 		}
@@ -59,19 +34,29 @@ d3.csv("data/breaches.csv").then(function(data){
 	// draw the US in this svg id
 	uStates.draw("#statesvg");
 
+	// min and max amount of breaches per state
+	var min = Math.min(...states_amount);
+	var max = Math.max(...states_amount);
+
+	// log them
+	// console.log(min+", "+max);
+
+	// this defines the color range
+	var color = d3.scaleLog()
+    	.domain([min, max])
+    	.range(["#ffffcc", "#800026"]);
+
 	//sets the color of each state
 	for(var i=0;i<states_amount.length;i++){
 		var curr = '#'+states_file[i].abbreviation;
-		var color = d3.interpolate("#ffffcc", "#800026")(states_amount[i]/100);
-		$(curr).css('fill',color);
+		
+		//console.log(states_file[i].name + ": "+  color(states_amount[i]));
+		$(curr).css('fill',color(states_amount[i]));
 	}
 
 	// displays the total amount of breaches
-	$("#breach-amount").text("There Were " + data.length + " Total Breaches");
+	$("#breach-amount").text("there were " + data.length + " total breaches");
 	
-	// gives a random reason for one of the breaches
-	$("#reason").text('"'+data[getRandom(0,data.length-1)].type+'"');
-
 	// checks for hover and display amount of breaches
 	$(document).ready(function(){
  		$("path").hover(function(){
