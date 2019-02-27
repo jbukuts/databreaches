@@ -1,5 +1,12 @@
 body {
-	background-color: #DDD;
+	background-color: #f9f9f9;
+	font-family: Arial;
+	text-align: center;
+}
+
+svg {
+	width: 80%;
+	margin: auto;
 }
 
 #house {
@@ -12,13 +19,20 @@ body {
 }
 
 h1 {
-
-	text-align: center;
+	font-size: 50px;
 }
 
 /** breaches text **/
 #breach-amount {
-	font-size: 100px;
-	font-family: Arial;
+	font-size: 35px;
 	text-align: center;
+}
+
+#reason {
+	font-size: 14px;
+	font-style: italic;
+}
+
+path:hover {
+	opacity: 0;
 }
