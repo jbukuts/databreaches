@@ -7,7 +7,7 @@ d3.json("data/states_titlecase.json").then(function(data){
 
 // create array to house how many breaches occurred in each state
 var states_amount  = [];
-for(var i = 0; i<52;i++){
+for(var i = 0; i<51;i++){
 	states_amount.push(0);
 }
 
@@ -22,6 +22,20 @@ d3.csv("data/breaches.csv").then(function(data){
 		years[i] = "20"+data[i].date.substring(start+1,data[i].date.length);
 		console.log(years[i]);
 	}
+
+	// count the amount of records lost from all data
+	var records_lost = 0;
+	for(var i=0;i<data.length;i++){
+		// parse int from data
+		var val = parseInt(Number(data[i].records));
+		// if the parsed val is not NaN then add to total
+		if (!isNaN(val)){
+			records_lost += val;
+		}
+	}
+
+	// log the total records lost
+	console.log(records_lost + " RECORDS LOST!");
 	
 	// see the json loaded
 	console.log(states_file);
@@ -75,7 +89,6 @@ d3.csv("data/breaches.csv").then(function(data){
     	}, function(){
     		// set tooltip back to 0 opacity
     		d3.select("#tooltip").transition().duration(500).style("opacity", 0); 
-    		
   		});
 	});
 
