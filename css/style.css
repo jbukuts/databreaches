@@ -8,12 +8,12 @@ body {
 /** general styling for any svg **/
 /** ensures is centered **/
 svg {
-	width: 80%;
 	margin: auto;
 }
+
 /** contaniner for all elements **/
 #house {
-	width: 80%;
+	width: 65%;
 	padding: 5px;
 	background: white;
 	margin: auto;
@@ -60,6 +60,17 @@ h1 {
 	font-style: italic;
 }
 
+
+
+#map-viz {
+	width: 80%;
+	margin: auto;
+}
+
+#map-viz h2 {
+	font-weight: bold;
+}
+
 /** styling for states **/
 .state {
 	stroke: #fff;
@@ -70,4 +81,44 @@ h1 {
 	opacity: .80;
 }
 
+#legend {
+	margin-left: auto;
+	width: 25%;
+}
 
+#legend h4 {
+	text-align: center;
+	
+}
+
+#legend-grad {
+	width: 100px;
+	height: 24px;
+  	background-image: linear-gradient(to right, #ffffcc, #800026);
+  	margin: auto;
+  	margin-top: 5px;
+}
+
+#legend p {
+	text-align: center;
+	margin-top: 5px;
+}
+
+
+#tooltip {   
+	position: absolute;           
+	text-align: center;
+	padding: 20px;             
+	margin: 10px;
+	font-size: 12px;        
+	background: black;   
+	border: 1px;               
+	pointer-events: none;         
+	background:rgba(0,0,0,1);
+	font-size:12px;
+	width:auto;
+	padding:4px;
+	color:white;
+	opacity: 0;
+	
+}
