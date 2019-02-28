@@ -5,8 +5,22 @@ d3.json("data/states_titlecase.json").then(function(data){
 	//console.log(states_file);
 });
 
-d3.json("data/test.json").then(function(data){
-	
+d3.json("data/data.json").then(function(data){
+
+	parseDate = d3.timeParse("%Y-%m-%d")
+
+	const formattedData = data.map(function(state){
+		return state["Breaches"].filter(function(breaches){
+			var dataExists = (breaches.Breach_Type && breaches.Total_Records && breaches.Date);
+			return dataExists
+		}).map(function(breaches){
+			breaches.Total_Records = +breaches.Total_Records;
+			breaches.Date = parseDate(breaches.Date)
+			return breaches;
+		})
+	});
+
+
 	console.log(data);
 	
 	// see the json loaded

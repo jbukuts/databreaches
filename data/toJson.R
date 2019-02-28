@@ -3,4 +3,15 @@ db <- read_csv("data_breaches.csv", col_types = cols(`Date Made Public` = col_da
 db <- db[which(db$`Total Records` > 0 & !is.na(db$State)), ]
 db <- cbind(db$State, db$`Type of breach`, db$`Total Records`, as.character(db$`Date Made Public`))
 colnames(db) <- c("State", "Breach_Type", "Total_Records", "Date")
+
+for(state in state.name){
+  temp <- db[which(db[,1] == state), 2:4]
+  temp.json <- toJSON(temp, pretty = T)
+  temp.json
+  writeLines(temp.json, "test.json")
+}
+
+
+
+
 writeLines(toJSON(db), "data.json")
