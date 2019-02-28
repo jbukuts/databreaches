@@ -44,7 +44,7 @@ d3.csv("data/data_breaches.csv").then(function(data){
 	// this defines the color range
 	var color = d3.scaleLog()
     	.domain([min, max])
-    	.range(["#ffffcc", "#800026"]);
+    	.range(["#dbdbdb", "#af2b2b"]);
 
 	//sets the color of each state
 	for(var i=0;i<states_amount.length;i++){
@@ -59,7 +59,7 @@ d3.csv("data/data_breaches.csv").then(function(data){
 	
 	// checks for hover and display amount of breaches
 	$(document).ready(function(){
- 		$("path").hover(function(){
+ 		$(".state").hover(function(){
  			// index in array of state
  			var index = states_file.findIndex(x => x.abbreviation==this.id);
     		
@@ -78,7 +78,18 @@ d3.csv("data/data_breaches.csv").then(function(data){
 	});
 
 
+	// upon clicking a state time to show some stuff
+	$(".state").click(function() {
+  		$("#depth").html(inDepth(this.id));
+	});
+
+
 });
+
+function inDepth(state){
+	return "<p>"+state+"</p>";
+}
+
 
 
 // simple fucntion to add tooltip and display breaches
