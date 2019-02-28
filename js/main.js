@@ -5,7 +5,7 @@ d3.json("data/states_titlecase.json").then(function(data){
 	//console.log(states_file);
 });
 
-d3.csv("data/data_breaches.csv").then(function(data){
+d3.json("data/test.json").then(function(data){
 	
 	console.log(data);
 	
@@ -30,6 +30,7 @@ d3.csv("data/data_breaches.csv").then(function(data){
 	}
 
 	console.log(states_amount);
+	console.log(data.Date);
 
 	// draw the US in this svg id
 	uStates.draw("#statesvg");
@@ -76,6 +77,69 @@ d3.csv("data/data_breaches.csv").then(function(data){
     		d3.select("#tooltip").transition().duration(500).style("opacity", 0); 
   		});
 	});
+
+
+
+	var margin = {left: 80, right: 20, top: 50, bottom: 100};
+	var height = 500 - margin.top - margin.bottom,
+		width = 800 - margin.left - margin.right;
+
+	var g = d3.select("#chart-area")
+		.append("svg")
+		.attr("width", width + margin.left + margin.right)
+		.attr("height", height + margin.top + margin.bottom)
+		.append("g")
+		.attr("transform", "translate(" + margin.left +
+			", " + margin.top + ")");
+
+
+// Scales
+	var x = d3.scaleLog()
+		.base(10)
+		.range([0, width])
+		.domain([142, 150000]);
+	console.log(x)
+	var y = d3.scaleLinear()
+		.range([height, 0])
+		.domain([0, 90]);
+	var continentColor = d3.scaleOrdinal(d3.schemePastel1);
+
+// Labels
+	var xLabel = g.append("text")
+		.attr("y", height + 50)
+		.attr("x", width / 2)
+		.attr("font-size", "20px")
+		.attr("text-anchor", "middle")
+		.text("Date");
+	var yLabel = g.append("text")
+		.attr("transform", "rotate(-90)")
+		.attr("y", -40)
+		.attr("x", -170)
+		.attr("font-size", "20px")
+		.attr("text-anchor", "middle")
+		.text("Number of Records")
+
+
+// X Axis
+	var xAxisCall = d3.axisBottom(x)
+		.tickValues([400, 4000, 40000])
+		.tickFormat(d3.format("$"));
+	g.append("g")
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + height + ")")
+		.call(xAxisCall);
+
+// Y Axis
+	var yAxisCall = d3.axisLeft(y)
+		.tickFormat(function (d) {
+			return +d;
+		});
+	g.append("g")
+		.attr("class", "y axis")
+		.call(yAxisCall);
+
+
+
 
 
 });
