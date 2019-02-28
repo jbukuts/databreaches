@@ -95,7 +95,7 @@ h1 {
 #legend-grad {
 	width: 100px;
 	height: 24px;
-  	background-image: linear-gradient(to right, #ffffcc, #800026);
+  	background-image: linear-gradient(to right, #dbdbdb, #af2b2b);
   	margin: auto;
   	margin-top: 5px;
 }
