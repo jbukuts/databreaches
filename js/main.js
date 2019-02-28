@@ -65,7 +65,7 @@ d3.csv("data/data_breaches.csv").then(function(data){
     		
     		// console.log(this.id + ": " + states_amount[index]);
     		// bring tooltip to view
-    		d3.select("#tooltip").transition().duration(200).style("opacity", 1);  
+    		d3.select("#tooltip").transition().duration(200).style("opacity", .9);  
 
     		// change text in tooltip
     		d3.select("#tooltip").html(tooltipHtml(this.id, states_amount[index]))  
