@@ -21,7 +21,7 @@ d3.json("data/data.json").then(function(data){
 	});
 
 
-	console.log(data);
+	console.log(formattedData[0]);
 	
 	// see the json loaded
 	console.log(states_file);
@@ -44,7 +44,7 @@ d3.json("data/data.json").then(function(data){
 	}
 
 	console.log(states_amount);
-	console.log(data.Date);
+	console.log(data);
 
 	// draw the US in this svg id
 	uStates.draw("#statesvg");
