@@ -25,6 +25,11 @@ d3.json("data/data.json").then(function (data) {
         })
     });
 
+    var tot = 0;
+    for(var i=0;i<data.length;i++){
+        tot += data[i].Breaches.length;
+    }
+    console.log(tot);
 
     console.log(formattedData);
 
@@ -42,7 +47,6 @@ d3.json("data/data.json").then(function (data) {
         states_amount[i] = formattedData[i].length
     }
 
-
     console.log(states_amount);
     console.log(data);
 
@@ -59,14 +63,12 @@ d3.json("data/data.json").then(function (data) {
     // this defines the color range
     var color = d3.scaleLog()
         .domain([min, max])
-        .range(["#ffffcc", "#800026"]);
+        .range(["#dbdbdb", "#af2b2b"]);
 
     //sets the color of each state
-    for (var i = 0; i < states_amount.length; i++) {
-        var curr = '#' + states_file[i].abbreviation;
-
-        //console.log(states_file[i].name + ": "+  color(states_amount[i]));
-        $(curr).css('fill', color(states_amount[i]));
+    for (var i = 0; i < data.length; i++) {
+        var curr = data[i].State;
+        $("[id='"+curr+"']").css('fill', color(data[i].Breaches.length));
     }
 
     // displays the total amount of breaches
@@ -77,27 +79,36 @@ d3.json("data/data.json").then(function (data) {
     var active_index = 0
     // checks for hover and display amount of breaches
     $(document).ready(function () {
+        //index of state
+
+        var index = 0;
         $("path").hover(function () {
             // index in array of state
-            var index = states_file.findIndex(x => x.abbreviation == this.id);
+            index = states_file.findIndex(x => x.name == this.id);
 
             // console.log(this.id + ": " + states_amount[index]);
             // bring tooltip to view
             d3.select("#tooltip").transition().duration(200).style("opacity", 1);
-            //Doesn't redraw the plot if it's the same state
-            if(index != active_index){
-                enterPlot(formattedData[index])
-                active_index = index
-            }
             // change text in tooltip
-            d3.select("#tooltip").html(tooltipHtml(this.id, states_amount[index]))
+            d3.select("#tooltip").html(tooltipHtml(this.id, data[index].Breaches.length))
                 .style("left", (event.pageX) + "px")
                 .style("top", (event.pageY - 28) + "px");
         }, function () {
             // set tooltip back to 0 opacity
             d3.select("#tooltip").transition().duration(500).style("opacity", 0);
+        }); 
+
+        // draws grapth on click of state
+        $('path').click(function(){
+            //Doesn't redraw the plot if it's the same state
+            if(index != active_index){
+                enterPlot(formattedData[index])
+                active_index = index
+            }
         });
     });
+
+
 
 
     var g = d3.select("#chart-area")
