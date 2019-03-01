@@ -26,7 +26,7 @@ d3.json("data/data.json").then(function (data) {
     });
 
     var tot = 0;
-    for(var i=0;i<data.length;i++){
+    for (var i = 0; i < data.length; i++) {
         tot += data[i].Breaches.length;
     }
     console.log(tot);
@@ -68,7 +68,7 @@ d3.json("data/data.json").then(function (data) {
     //sets the color of each state
     for (var i = 0; i < data.length; i++) {
         var curr = data[i].State;
-        $("[id='"+curr+"']").css('fill', color(data[i].Breaches.length));
+        $("[id='" + curr + "']").css('fill', color(data[i].Breaches.length));
     }
 
     // displays the total amount of breaches
@@ -76,7 +76,8 @@ d3.json("data/data.json").then(function (data) {
         return total + num
     }) + " total breaches");
     //keeps track of which state is plotted
-    var active_index = 0
+    //Starts at 41 for South Carolina
+    var active_index = 40
     // checks for hover and display amount of breaches
     $(document).ready(function () {
         //index of state
@@ -96,19 +97,17 @@ d3.json("data/data.json").then(function (data) {
         }, function () {
             // set tooltip back to 0 opacity
             d3.select("#tooltip").transition().duration(500).style("opacity", 0);
-        }); 
+        });
 
         // draws grapth on click of state
-        $('path').click(function(){
+        $('path').click(function () {
             //Doesn't redraw the plot if it's the same state
-            if(index != active_index){
-                enterPlot(formattedData[index])
+            if (index != active_index) {
                 active_index = index
+                enterPlot(formattedData[index])
             }
         });
     });
-
-
 
 
     var g = d3.select("#chart-area")
@@ -118,6 +117,15 @@ d3.json("data/data.json").then(function (data) {
         .append("g")
         .attr("transform", "translate(" + margin.left +
             ", " + margin.top + ")");
+
+    g.append("text")
+        .attr("class", "title")
+        .attr("x", (width / 2))
+        .attr("y", 0 - (margin.top / 2))
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .style("text-decoration", "underline")
+        .text(states_file[active_index].name);
 
     var xLabel = g.append("text")
         .attr("y", height + 50)
@@ -132,10 +140,10 @@ d3.json("data/data.json").then(function (data) {
         .attr("font-size", "20px")
         .attr("text-anchor", "middle")
         .text("Number of Records")
-    var typeColor = d3.scaleOrdinal(d3.schemeAccent)
+    var typeColor = d3.scaleOrdinal(d3.schemeCategory10)
     var records = [];
-    for (i = 0; i < formattedData[0].length; i++) {
-        records.push(formattedData[0][i].Total_Records)
+    for (i = 0; i < formattedData[active_index].length; i++) {
+        records.push(formattedData[active_index][i].Total_Records)
     }
 
     var maxBreaches = Math.max(...records)
@@ -171,7 +179,7 @@ d3.json("data/data.json").then(function (data) {
         .call(yAxisCall);
 
     g.selectAll("circles")
-        .data(formattedData[0])
+        .data(formattedData[active_index])
         .enter()
         .append("circle")
         .attr("cx", function (s) {
@@ -201,6 +209,18 @@ d3.json("data/data.json").then(function (data) {
             .range([height, 0])
             .domain([1, maxBreaches]);
 
+        g.selectAll(".title")
+            .remove()
+        g.append("text")
+            .attr("class", "title")
+            .attr("x", (width / 2))
+            .attr("y", 0 - (margin.top / 2))
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px")
+            .style("text-decoration", "underline")
+            .text(states_file[active_index].name);
+
+
 // Y Axis
         var yAxisCall = d3.axisLeft(y)
             .scale(y, "s")
@@ -215,8 +235,8 @@ d3.json("data/data.json").then(function (data) {
         g.selectAll("circle")
             .transition()
             .duration(500)
-                .attr("cx", width / 2)
-                .attr("cy", height / 2)
+            .attr("cx", width / 2)
+            .attr("cy", height / 2)
         g.selectAll("circle")
             .remove()
             .exit()
@@ -232,13 +252,13 @@ d3.json("data/data.json").then(function (data) {
             })
             .transition()
             .ease(d3.easeCircleOut)
-                .duration(1000)
-                .attr("cx", function (s) {
+            .duration(1000)
+            .attr("cx", function (s) {
                 return x(s.Date)
-                })
-                .attr("cy", function (s) {
+            })
+            .attr("cy", function (s) {
                 return y(s.Total_Records)
-                })
+            })
 
 
         /*        g.selectAll("circle")
