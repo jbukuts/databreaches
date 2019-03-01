@@ -8,7 +8,6 @@ d3.json("data/states_titlecase.json").then(function(data){
 d3.csv("data/data_breaches.csv").then(function(data){
 	
 	console.log(data);
-	
 	// see the json loaded
 	console.log(states_file);
 
@@ -48,10 +47,10 @@ d3.csv("data/data_breaches.csv").then(function(data){
 
 	//sets the color of each state
 	for(var i=0;i<states_amount.length;i++){
-		var curr = '#'+states_file[i].abbreviation;
-		
+		var curr = states_file[i].name;
+
 		//console.log(states_file[i].name + ": "+  color(states_amount[i]));
-		$(curr).css('fill',color(states_amount[i]));
+		$("[id='"+curr+"']").css('fill',color(states_amount[i]));
 	}
 
 	// displays the total amount of breaches
@@ -61,7 +60,7 @@ d3.csv("data/data_breaches.csv").then(function(data){
 	$(document).ready(function(){
  		$(".state").hover(function(){
  			// index in array of state
- 			var index = states_file.findIndex(x => x.abbreviation==this.id);
+ 			var index = states_file.findIndex(x => x.name==this.id);
     		
     		// console.log(this.id + ": " + states_amount[index]);
     		// bring tooltip to view
@@ -77,19 +76,22 @@ d3.csv("data/data_breaches.csv").then(function(data){
   		});
 	});
 
-
 	// upon clicking a state time to show some stuff
 	$(".state").click(function() {
   		$("#depth").html(inDepth(this.id));
+
+  		console.log(this.id);
+
+  		var display_data = {};
+  		for(var i=0;i<data.length;i++){
+  			console.log(data[i].State);
+  		}
 	});
-
-
 });
 
 function inDepth(state){
 	return "<p>"+state+"</p>";
 }
-
 
 
 // simple fucntion to add tooltip and display breaches
