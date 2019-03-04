@@ -117,5 +117,17 @@ h2 {
 	padding:4px;
 	color:white;
 	opacity: 0;
-	
 }
+
+#chart-area {
+	width: 80%;
+	margin: auto;
+}
+
+#records-lost, #breaches-total {
+	text-align: left;
+	font-size: 25px;
+	font-weight: bold;
+}
+
+

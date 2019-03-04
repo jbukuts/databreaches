@@ -200,6 +200,8 @@ d3.json("data/data.json").then(function (data) {
             return typeColor(s.Breach_Type)
         })
 
+        changeText(active_index);
+
 
     // function that is given state and displays the proper data 
     function enterPlot(state) {
@@ -296,8 +298,21 @@ d3.json("data/data.json").then(function (data) {
                 active_index = index
                 enterPlot(formattedData[index])
             }
+
+            changeText(index);
         });
     });
+
+
+    function changeText(index){
+        var recordsLost = 0;
+        for(var i=0;i<data[index].Breaches.length;i++){
+            recordsLost += data[index].Breaches[i].Total_Records;
+        }
+       
+        $("#records-lost").text("In "+data[index].State+" there were "+recordsLost+" records lost");
+        $("#breaches-total").text("With a total of "+data[index].Breaches.length+" breaches");
+    }
 
 
 
