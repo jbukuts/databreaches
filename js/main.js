@@ -1,9 +1,3 @@
-// load in the states names and abbreviations to check in data
-var states_file = [];
-d3.json("data/states_titlecase.json").then(function (data) {
-    states_file = data;
-    //console.log(states_file);
-});
 
 var margin = {left: 80, right: 20, top: 50, bottom: 100};
 var height = 500 - margin.top - margin.bottom,
@@ -13,6 +7,7 @@ d3.json("data/data.json").then(function (data) {
 
     parseDate = d3.timeParse("%Y-%m-%d")
 
+    // creates formatted data
     const formattedData = data.map(function (state) {
         return state["Breaches"].filter(function (breaches) {
             var dataExists = (breaches.Breach_Type && breaches.Total_Records && breaches.Date);
@@ -25,16 +20,9 @@ d3.json("data/data.json").then(function (data) {
         })
     });
 
-    var tot = 0;
-    for (var i = 0; i < data.length; i++) {
-        tot += data[i].Breaches.length;
-    }
-    console.log(tot);
-
+    // check new data
     console.log(formattedData);
 
-    // see the json loaded
-    console.log(states_file);
 
     // create array to house how many breaches occurred in each state
     var states_amount = [];
@@ -68,48 +56,22 @@ d3.json("data/data.json").then(function (data) {
     //sets the color of each state
     for (var i = 0; i < data.length; i++) {
         var curr = data[i].State;
-        $("[id='" + curr + "']").css('fill', color(data[i].Breaches.length));
+        $("[id='" + curr + "']").css('fill', color(formattedData[i].length));
     }
 
+    // calculates total breaches
+    var tot = 0
+    for(var i=0;i<formattedData.length;i++)
+        tot += formattedData[i].length;
+
     // displays the total amount of breaches
-    $("#breach-amount").text("there were " + states_amount.reduce(function (total, num) {
-        return total + num
-    }) + " total breaches");
+    $("#breach-amount").text("During this time there were " + tot + " total breaches");
+    
     //keeps track of which state is plotted
     //Starts at 41 for South Carolina
     var active_index = 40
-    // checks for hover and display amount of breaches
-    $(document).ready(function () {
-        //index of state
 
-        var index = 0;
-        $("path").hover(function () {
-            // index in array of state
-            index = states_file.findIndex(x => x.name == this.id);
-
-            // console.log(this.id + ": " + states_amount[index]);
-            // bring tooltip to view
-            d3.select("#tooltip").transition().duration(200).style("opacity", 1);
-            // change text in tooltip
-            d3.select("#tooltip").html(tooltipHtml(this.id, data[index].Breaches.length))
-                .style("left", (event.pageX) + "px")
-                .style("top", (event.pageY - 28) + "px");
-        }, function () {
-            // set tooltip back to 0 opacity
-            d3.select("#tooltip").transition().duration(500).style("opacity", 0);
-        });
-
-        // draws grapth on click of state
-        $('path').click(function () {
-            //Doesn't redraw the plot if it's the same state
-            if (index != active_index) {
-                active_index = index
-                enterPlot(formattedData[index])
-            }
-        });
-    });
-
-
+    // adds chart 
     var g = d3.select("#chart-area")
         .append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -118,21 +80,25 @@ d3.json("data/data.json").then(function (data) {
         .attr("transform", "translate(" + margin.left +
             ", " + margin.top + ")");
 
+    // adds the title for the chart
     g.append("text")
         .attr("class", "title")
         .attr("x", (width / 2))
         .attr("y", 0 - (margin.top / 2))
         .attr("text-anchor", "middle")
         .style("font-size", "16px")
-        .style("text-decoration", "underline")
-        .text(states_file[active_index].name);
+        .style("font-weight", "bold")
+        .text(data[active_index].State);
 
+    // x axis label
     var xLabel = g.append("text")
         .attr("y", height + 50)
         .attr("x", width / 2)
         .attr("font-size", "20px")
         .attr("text-anchor", "middle")
         .text("Date");
+
+    // y axis label
     var yLabel = g.append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", -40)
@@ -140,27 +106,68 @@ d3.json("data/data.json").then(function (data) {
         .attr("font-size", "20px")
         .attr("text-anchor", "middle")
         .text("Number of Records")
-    var typeColor = d3.scaleOrdinal(d3.schemeCategory10)
+
+    // determines color of the dot on graph
+    var typeColor = d3.scaleOrdinal(d3.schemeCategory10);
+
+    // add the legend   
+    var legend = g.append("g")
+      .attr("class", "legend")
+      .attr("x", 0)
+      .attr("y", 25)
+      .attr("height", 100)
+      .attr("width", 100);
+
+    // array of different breach types 
+    var differentBreaches = ["DISC","PORT","INSD","STAT","PHYS","HACK"];
+
+    // rectangles for legend
+    legend.selectAll('g')
+        .data(differentBreaches)
+        .enter()
+        .append("rect")
+        .attr("x", width)
+        .attr("y", function(d,i){ return i*25})
+        .attr("width", 10)
+        .attr("height", 10)
+        .style("fill", function(d){
+            console.log(d);
+            return typeColor(d);
+        });
+
+    // text for legend
+    legend.selectAll('g')
+        .data(differentBreaches)
+        .enter()
+        .append("text")
+        .attr("x", width - 45)
+        .attr("y", function(d,i){ return i*25+10})
+        .text(function(d){return d});
+
+
     var records = [];
     for (i = 0; i < formattedData[active_index].length; i++) {
         records.push(formattedData[active_index][i].Total_Records)
     }
-
+    
+    
     var maxBreaches = Math.max(...records)
     //Moves to the next highest power of 10 to force the axis to never include
     //non-labeled ticks
     maxBreaches = Math.pow(10, Math.ceil(Math.log10(maxBreaches)))
 
+    // scale for the x axis
     var x = d3.scaleTime()
         .range([0, width])
         .domain([new Date(2004, 0, 1), new Date(2018, 11, 31)]);
 
+    // scale for the y axis
     var y = d3.scaleLog()
         .base(10)
         .range([height, 0])
         .domain([1, maxBreaches]);
 
-// X Axis
+    // x axis call
     var xAxisCall = d3.axisBottom(x)
         .scale(x)
         .tickFormat(d3.timeFormat("%b. %Y"));
@@ -169,15 +176,15 @@ d3.json("data/data.json").then(function (data) {
         .attr("transform", "translate(0," + height + ")")
         .call(xAxisCall);
 
-// Y Axis
+    // x axis call
     var yAxisCall = d3.axisLeft(y)
         .scale(y, "s")
         .ticks(5, ".0s")
-
     g.append("g")
         .attr("class", "y axis")
         .call(yAxisCall);
 
+    // adds circles to the graph
     g.selectAll("circles")
         .data(formattedData[active_index])
         .enter()
@@ -194,8 +201,8 @@ d3.json("data/data.json").then(function (data) {
         })
 
 
+    // function that is given state and displays the proper data 
     function enterPlot(state) {
-
 
         var records = [];
         for (i = 0; i < state.length; i++) {
@@ -217,11 +224,10 @@ d3.json("data/data.json").then(function (data) {
             .attr("y", 0 - (margin.top / 2))
             .attr("text-anchor", "middle")
             .style("font-size", "16px")
-            .style("text-decoration", "underline")
-            .text(states_file[active_index].name);
+            .style("font-weight", "bold")
+            .text(data[active_index].State);
 
-
-// Y Axis
+        // Y Axis
         var yAxisCall = d3.axisLeft(y)
             .scale(y, "s")
             .ticks(5, ".0s")
@@ -260,26 +266,43 @@ d3.json("data/data.json").then(function (data) {
                 return y(s.Total_Records)
             })
 
-
-        /*        g.selectAll("circle")
-                    .remove()
-                    .enter()
-                    .data(state)
-                    .enter()
-                    .append("circle")
-                    .transition()
-                    .attr("cx", function (s) {
-                        return x(s.Date)
-                    })
-                    .attr("cy", function (s) {
-                        return y(s.Total_Records)
-                    })
-                    .attr("r", 3)
-                    .attr("fill", function (s) {
-                        return typeColor(s.Breach_Type)
-                    })*/
     }
+
+
+     // checks for hover and display amount of breaches
+    $(document).ready(function () {
+        //index of state
+
+        var index = 0;
+        $("path").hover(function () {
+            // index in array of state
+            index = data.findIndex(x => x.State == this.id);
+
+            // bring tooltip to view
+            d3.select("#tooltip").transition().duration(200).style("opacity", 1);
+            // change text in tooltip
+            d3.select("#tooltip").html(tooltipHtml(this.id, formattedData[index].length))
+                .style("left", (event.pageX) + "px")
+                .style("top", (event.pageY - 28) + "px");
+        }, function () {
+            // set tooltip back to 0 opacity
+            d3.select("#tooltip").transition().duration(500).style("opacity", 0);
+        });
+
+        // draws grapth on click of state
+        $('path').click(function () {
+            //Doesn't redraw the plot if it's the same state
+            if (index != active_index) {
+                active_index = index
+                enterPlot(formattedData[index])
+            }
+        });
+    });
+
+
+
 });
+
 
 
 // simple fucntion to add tooltip and display breaches
@@ -287,12 +310,6 @@ function tooltipHtml(n, d) {
     return "<h4>" + n + "</h4><table>" +
         "<tr><td>Breaches: </td><td>" + (d) + "</td></tr>" +
         "</table>";
-}
-
-
-// quick function to return a random num between hi and low
-function getRandom(lo = 0, hi) {
-    return Math.floor(Math.random() * hi) + lo;
 }
 
 
