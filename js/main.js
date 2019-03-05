@@ -3,6 +3,11 @@ var margin = {left: 80, right: 20, top: 50, bottom: 100};
 var height = 500 - margin.top - margin.bottom,
     width = 800 - margin.left - margin.right;
 
+// Define the div for the tooltip
+var div = d3.select("body").append("div")   
+    .attr("class", "tooltip")               
+    .style("opacity", 0);
+
 d3.json("data/data.json").then(function (data) {
 
     parseDate = d3.timeParse("%Y-%m-%d")
@@ -195,13 +200,14 @@ d3.json("data/data.json").then(function (data) {
         .attr("cy", function (s) {
             return y(s.Total_Records)
         })
-        .attr("r", 3)
+        .attr("r", 4)
         .attr("fill", function (s) {
             return typeColor(s.Breach_Type)
         })
 
-        changeText(active_index);
-
+    // number of breaches and records lost
+    changeText(active_index);
+    enterPlot(formattedData[active_index]);
 
     // function that is given state and displays the proper data 
     function enterPlot(state) {
@@ -254,7 +260,7 @@ d3.json("data/data.json").then(function (data) {
             .append("circle")
             .attr("cx", width / 2)
             .attr("cy", height / 2)
-            .attr("r", 3)
+            .attr("r", 4)
             .attr("fill", function (s) {
                 return typeColor(s.Breach_Type)
             })
@@ -266,10 +272,30 @@ d3.json("data/data.json").then(function (data) {
             })
             .attr("cy", function (s) {
                 return y(s.Total_Records)
-            })
+            });
 
+            // tooltip on hover for chart
+            g.selectAll("circle")
+                .on("mouseover", function(s) {      
+                    // bring to view
+                    div.transition()        
+                        .duration(200)      
+                        .style("opacity", .9);  
+
+                    // edit the text       
+                    div.html(s.Total_Records + " Records Lost")  
+                        .style("left", (d3.event.pageX) + "px")     
+                        .style("top", (d3.event.pageY - 28) + "px");
+                    
+                    // regex for commons
+                    $(".tooltip").digits();
+                })                  
+                .on("mouseout", function(d) {       
+                    div.transition()        
+                        .duration(500)      
+                        .style("opacity", 0);   
+                });
     }
-
 
      // checks for hover and display amount of breaches
     $(document).ready(function () {
@@ -300,31 +326,39 @@ d3.json("data/data.json").then(function (data) {
             }
 
             changeText(index);
+            $('html, body').animate({
+                scrollTop: ($('#chart-area').offset().top)
+            },500);
         });
     });
 
-
+    //changes text for breach amount and records lost
     function changeText(index){
         var recordsLost = 0;
         for(var i=0;i<data[index].Breaches.length;i++){
             recordsLost += data[index].Breaches[i].Total_Records;
         }
        
-        $("#records-lost").text("In "+data[index].State+" there were "+recordsLost+" records lost");
-        $("#breaches-total").text("With a total of "+data[index].Breaches.length+" breaches");
+        $("#records-lost").text("In "+data[index].State+" There Were "+recordsLost+" Records Lost");
+        $("#breaches-total").text("With a Total of "+data[index].Breaches.length+" Breaches");
+
+        $("#records-lost").digits();
+        $("#breaches-total").digits();
     }
-
-
-
 });
-
-
 
 // simple fucntion to add tooltip and display breaches
 function tooltipHtml(n, d) {
     return "<h4>" + n + "</h4><table>" +
         "<tr><td>Breaches: </td><td>" + (d) + "</td></tr>" +
         "</table>";
+}
+
+ // Thanks @Paul Creasey for the regex 
+$.fn.digits = function(){ 
+    return this.each(function(){ 
+        $(this).text( $(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") ); 
+    })
 }
 
 

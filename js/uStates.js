@@ -61,8 +61,11 @@
 			.append("path")
 			.attr("class","state")
 			.attr("id", function(d){ return d.n;})
-			.attr("d",function(d){ return d.d;});
-			
+			.attr("d",function(d){ return d.d;})
+			.transition()
+			.attrTween("transform", function(d, i, a) {
+        		return d3.interpolateString(a, 'scale(1)');
+    		});			
 	}
 	this.uStates=uStates;
 })();
