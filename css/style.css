@@ -59,7 +59,7 @@ h2 {
 
 
 #map-viz {
-	
+
 	/*margin: auto;*/
 
 	display: inline-block;
@@ -91,7 +91,7 @@ h2 {
 #legend h4 {
 	text-align: center;
 	margin-top: 0px;
-	
+
 }
 
 #legend-grad {
@@ -109,15 +109,15 @@ h2 {
 }
 
 
-#tooltip {   
-	position: absolute;           
+#tooltip {
+	position: absolute;
 	text-align: center;
-	padding: 20px;             
+	padding: 20px;
 	margin: 10px;
-	font-size: 12px;        
-	background: black;   
-	border: 1px;               
-	pointer-events: none;         
+	font-size: 12px;
+	background: black;
+	border: 1px;
+	pointer-events: none;
 	background:rgba(0,0,0,1);
 	font-size:12px;
 	width:auto;
@@ -126,14 +126,14 @@ h2 {
 	opacity: 0;
 }
 
-.tooltip {	
-    position: absolute;			
-    text-align: center;			
-    width: 60px;					
-    height: 60px;					
-    padding: 2px;					
-    background: #dbdbdb;			
-    pointer-events: none;			
+.tooltip {
+    position: absolute;
+    text-align: center;
+    width: 60px;
+    height: 60px;
+    padding: 2px;
+    background: #dbdbdb;
+    pointer-events: none;
 }
 
 #dropdown{
