@@ -13,30 +13,30 @@ svg {
 
 /** contaniner for all elements **/
 #house {
-	width: 80%;
+	width: 100%;
 	padding: 5px;
 	background: white;
 	margin: auto;
-	margin-top: 50px;
+	margin-top: 0px;
 }
 
 /** overall title **/
 h1 {
 	font-size: 50px;
 	font-weight: bold;
-	margin-top: 32px;
+	margin-top: 15px;
 }
 
 h2 {
-	margin-bottom: 30px;
+	margin-bottom: 20px;
 }
 
 /** description of data and source **/
 #description {
-	font-size: 20px;
+	font-size: 18px;
 	width: 60%;
 	margin: auto;
-	margin-top: 35px;
+	margin-top: 20px;
 }
 
 /** shows total amount of breaches **/
@@ -60,12 +60,15 @@ h2 {
 
 #map-viz {
 	
-	margin: auto;
+	/*margin: auto;*/
+
+	display: inline-block;
+	float: left;
 }
 
 #map-viz h2 {
 	font-weight: bold;
-	margin-top: 100px;
+	margin-top: 10px;
 }
 
 /** styling for states **/
@@ -79,12 +82,15 @@ h2 {
 }
 
 #legend {
-	margin-left: auto;
+	padding: 0px;
+	margin-top: -10%;
+	margin-left: 50%;
 	width: 25%;
 }
 
 #legend h4 {
 	text-align: center;
+	margin-top: 0px;
 	
 }
 
@@ -99,6 +105,7 @@ h2 {
 #legend p {
 	text-align: center;
 	margin-top: 5px;
+	margin-bottom: 0px;
 }
 
 
@@ -129,14 +136,21 @@ h2 {
     pointer-events: none;			
 }
 
+#dropdown{
+margin-left: 55%
+}
+
 #chart-area {
-	width: 80%;
-	margin: auto;
+
+	display: inline-block;
+
 }
 
 #chart-area div {
 	padding: 5px;
 	margin-left: 0;
+	display: inline-block;
+	float: right;
 
 }
 
@@ -146,5 +160,8 @@ h2 {
 	font-size: 25px;
 	font-weight: bold;
 }
+
+
+
 
 

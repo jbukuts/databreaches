@@ -1,11 +1,10 @@
-
 var margin = {left: 80, right: 20, top: 50, bottom: 100};
 var height = 500 - margin.top - margin.bottom,
     width = 800 - margin.left - margin.right;
 
 // Define the div for the tooltip
-var div = d3.select("body").append("div")   
-    .attr("class", "tooltip")               
+var div = d3.select("body").append("div")
+    .attr("class", "tooltip")
     .style("opacity", 0);
 
 d3.json("data/data.json").then(function (data) {
@@ -66,14 +65,14 @@ d3.json("data/data.json").then(function (data) {
 
     // calculates total breaches
     var tot = 0
-    for(var i=0;i<formattedData.length;i++)
+    for (var i = 0; i < formattedData.length; i++)
         tot += formattedData[i].length;
 
     // displays the total amount of breaches
     $("#breach-amount").text("During this time there were " + tot + " total breaches");
-    
+
     //keeps track of which state is plotted
-    //Starts at 41 for South Carolina
+    //Starts at 40 for South Carolina
     var active_index = 40
 
     // adds chart 
@@ -85,6 +84,9 @@ d3.json("data/data.json").then(function (data) {
         .attr("transform", "translate(" + margin.left +
             ", " + margin.top + ")");
 
+
+    var plot_title = changeText(formattedData[active_index])
+    console.log(plot_title)
     // adds the title for the chart
     g.append("text")
         .attr("class", "title")
@@ -93,7 +95,7 @@ d3.json("data/data.json").then(function (data) {
         .attr("text-anchor", "middle")
         .style("font-size", "16px")
         .style("font-weight", "bold")
-        .text(data[active_index].State);
+        .text(plot_title);
 
     // x axis label
     var xLabel = g.append("text")
@@ -113,31 +115,41 @@ d3.json("data/data.json").then(function (data) {
         .text("Number of Records")
 
     // determines color of the dot on graph
-    var typeColor = d3.scaleOrdinal(d3.schemeCategory10);
+    var typeColor = []
+    typeColor[0] = d3.scaleOrdinal(["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b"]);
+    typeColor[1] = d3.scaleOrdinal(["#1f77b4", "#ff7f0e00", "#2ca02c00", "#d6272800", "#9467bd00", "#8c564b00"]);
+    typeColor[2] = d3.scaleOrdinal(["#1f77b400", "#ff7f0e", "#2ca02c00", "#d6272800", "#9467bd00", "#8c564b00"]);
+    typeColor[3] = d3.scaleOrdinal(["#1f77b400", "#ff7f0e00", "#2ca02c", "#d6272800", "#9467bd00", "#8c564b00"]);
+    typeColor[4] = d3.scaleOrdinal(["#1f77b400", "#ff7f0e00", "#2ca02c00", "#d62728", "#9467bd00", "#8c564b00"]);
+    typeColor[5] = d3.scaleOrdinal(["#1f77b400", "#ff7f0e00", "#2ca02c00", "#d6272800", "#9467bd", "#8c564b00"]);
+    typeColor[6] = d3.scaleOrdinal(["#1f77b400", "#ff7f0e00", "#2ca02c00", "#d6272800", "#9467bd00", "#8c564b"]);
 
-    // add the legend   
+
+    // add the legend
     var legend = g.append("g")
-      .attr("class", "legend")
-      .attr("x", 0)
-      .attr("y", 25)
-      .attr("height", 100)
-      .attr("width", 100);
+        .attr("class", "legend")
+        .attr("x", 0)
+        .attr("y", 25)
+        .attr("height", 100)
+        .attr("width", 100);
 
     // array of different breach types 
-    var differentBreaches = ["DISC","PORT","INSD","STAT","PHYS","HACK"];
+    var differentBreaches = ["DISC", "PORT", "INSD", "STAT", "PHYS", "HACK"];
 
     // rectangles for legend
     legend.selectAll('g')
         .data(differentBreaches)
         .enter()
         .append("rect")
-        .attr("x", width)
-        .attr("y", function(d,i){ return i*25})
+        .attr("y", height + 30)
+        .attr("x", function (d, i) {
+            return i * 45
+        })
         .attr("width", 10)
         .attr("height", 10)
-        .style("fill", function(d){
+        .style("fill", function (d) {
             console.log(d);
-            return typeColor(d);
+            return typeColor[0](d);
         });
 
     // text for legend
@@ -145,17 +157,21 @@ d3.json("data/data.json").then(function (data) {
         .data(differentBreaches)
         .enter()
         .append("text")
-        .attr("x", width - 45)
-        .attr("y", function(d,i){ return i*25+10})
-        .text(function(d){return d});
+        .attr("y", height + 55)
+        .attr("x", function (d, i) {
+            return i * 45 -12
+        })
+        .text(function (d) {
+            return d
+        });
 
 
     var records = [];
     for (i = 0; i < formattedData[active_index].length; i++) {
         records.push(formattedData[active_index][i].Total_Records)
     }
-    
-    
+
+
     var maxBreaches = Math.max(...records)
     //Moves to the next highest power of 10 to force the axis to never include
     //non-labeled ticks
@@ -189,6 +205,8 @@ d3.json("data/data.json").then(function (data) {
         .attr("class", "y axis")
         .call(yAxisCall);
 
+    var active_scheme = 0
+
     // adds circles to the graph
     g.selectAll("circles")
         .data(formattedData[active_index])
@@ -202,7 +220,7 @@ d3.json("data/data.json").then(function (data) {
         })
         .attr("r", 4)
         .attr("fill", function (s) {
-            return typeColor(s.Breach_Type)
+            return typeColor[active_scheme](s.Breach_Type)
         })
 
     // number of breaches and records lost
@@ -233,7 +251,7 @@ d3.json("data/data.json").then(function (data) {
             .attr("text-anchor", "middle")
             .style("font-size", "16px")
             .style("font-weight", "bold")
-            .text(data[active_index].State);
+            .text(changeText(formattedData[active_index]));
 
         // Y Axis
         var yAxisCall = d3.axisLeft(y)
@@ -262,7 +280,7 @@ d3.json("data/data.json").then(function (data) {
             .attr("cy", height / 2)
             .attr("r", 4)
             .attr("fill", function (s) {
-                return typeColor(s.Breach_Type)
+                return typeColor[active_scheme](s.Breach_Type)
             })
             .transition()
             .ease(d3.easeCircleOut)
@@ -274,30 +292,40 @@ d3.json("data/data.json").then(function (data) {
                 return y(s.Total_Records)
             });
 
-            // tooltip on hover for chart
-            g.selectAll("circle")
-                .on("mouseover", function(s) {      
-                    // bring to view
-                    div.transition()        
-                        .duration(200)      
-                        .style("opacity", .9);  
+        // tooltip on hover for chart
+        g.selectAll("circle")
+            .on("mouseover", function (s) {
+                // bring to view
+                div.transition()
+                    .duration(200)
+                    .style("opacity", .9);
 
-                    // edit the text       
-                    div.html(s.Total_Records + " Records Lost")  
-                        .style("left", (d3.event.pageX) + "px")     
+                // edit the text
+                if (s.Total_Records == 1.001) {
+                    div.html("Unknown Records Lost")
+                        .style("left", (d3.event.pageX) + "px")
                         .style("top", (d3.event.pageY - 28) + "px");
-                    
-                    // regex for commons
-                    $(".tooltip").digits();
-                })                  
-                .on("mouseout", function(d) {       
-                    div.transition()        
-                        .duration(500)      
-                        .style("opacity", 0);   
-                });
+                } else if (s.Total_Records == 1) {
+                    div.html(s.Total_Records + " Record Lost")
+                        .style("left", (d3.event.pageX) + "px")
+                        .style("top", (d3.event.pageY - 28) + "px");
+                } else {
+                    div.html(s.Total_Records + " Records Lost")
+                        .style("left", (d3.event.pageX) + "px")
+                        .style("top", (d3.event.pageY - 28) + "px");
+                }
+
+                // regex for commons
+                $(".tooltip").digits();
+            })
+            .on("mouseout", function (d) {
+                div.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+            });
     }
 
-     // checks for hover and display amount of breaches
+    // checks for hover and display amount of breaches
     $(document).ready(function () {
         //index of state
 
@@ -328,23 +356,50 @@ d3.json("data/data.json").then(function (data) {
             changeText(index);
             $('html, body').animate({
                 scrollTop: ($('#chart-area').offset().top)
-            },500);
+            }, 500);
         });
     });
 
     //changes text for breach amount and records lost
-    function changeText(index){
-        var recordsLost = 0;
-        for(var i=0;i<data[index].Breaches.length;i++){
-            recordsLost += data[index].Breaches[i].Total_Records;
-        }
-       
-        $("#records-lost").text("In "+data[index].State+" There Were "+recordsLost+" Records Lost");
-        $("#breaches-total").text("With a Total of "+data[index].Breaches.length+" Breaches");
+    /*    function changeText(index){
+            var recordsLost = 0;
+            for(var i=0;i<data[index].Breaches.length;i++){
+                recordsLost += data[index].Breaches[i].Total_Records;
+            }
 
-        $("#records-lost").digits();
-        $("#breaches-total").digits();
+            $("#records-lost").text("In "+data[index].State+" There Were "+recordsLost+" Records Lost");
+            $("#breaches-total").text("With a Total of "+data[index].Breaches.length+" Breaches");
+
+            $("#records-lost").digits();
+            $("#breaches-total").digits();
+
+
+        }*/
+
+
+    function changeText(state) {
+        var recordsLost = 0;
+        for (var i = 0; i < state.length; i++) {
+            recordsLost += state[i].Total_Records;
+        }
+        return data[active_index].State + " - Records Exposed: " + d3.format(",")(Math.floor(recordsLost)) + " - Breaches: " + state.length
+
     }
+
+// sourced from https://codepen.io/tarsusi/pen/reovOV
+
+        d3.select("select")
+            .on("change", function (d) {
+                active_scheme = selected = d3.select("#d3-dropdown").node().value;
+console.log(active_scheme)
+                g.selectAll("circle")
+                    .attr("fill", function (s) {
+                        return typeColor[active_scheme](s.Breach_Type)
+                    })
+            })
+
+
+
 });
 
 // simple fucntion to add tooltip and display breaches
@@ -354,10 +409,10 @@ function tooltipHtml(n, d) {
         "</table>";
 }
 
- // Thanks @Paul Creasey for the regex 
-$.fn.digits = function(){ 
-    return this.each(function(){ 
-        $(this).text( $(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") ); 
+// Thanks @Paul Creasey for the regex
+$.fn.digits = function () {
+    return this.each(function () {
+        $(this).text($(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
     })
 }
 
