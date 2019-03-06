@@ -160,14 +160,16 @@ d3.json("data/data.json").then(function (data) {
 
     // array of different breach types 
     var differentBreaches = ["DISC","PORT","INSD","STAT","PHYS","HACK","CARD"];
+    var breachNames = ["Unintended Disclosure","Portable Device","Insider","Stationary Device","Physical Loss","Hacking","Card Fraud"];
+
 
     // rectangles for legend
     legend.selectAll('g')
         .data(differentBreaches)
         .enter()
         .append("rect")
-        .attr("x", width)
-        .attr("y", function(d,i){ return i*25})
+        .attr("x", function(d,i){ return i*65})
+        .attr("y", height+55)
         .attr("width", 10)
         .attr("height", 10)
         .style("fill", function(d){
@@ -180,8 +182,8 @@ d3.json("data/data.json").then(function (data) {
         .data(differentBreaches)
         .enter()
         .append("text")
-        .attr("x", width - 45)
-        .attr("y", function(d,i){ return i*25+10})
+        .attr("x", function(d,i){ return i*65+15})
+        .attr("y", height+65)
         .text(function(d){return d});
 
 
@@ -332,7 +334,51 @@ d3.json("data/data.json").then(function (data) {
                 });
     }
 
-     // checks for hover and display amount of breaches
+
+    // when change in value in dropdown must draw with new values
+    var dropdownChange = function() {
+        // selected value
+        var selected = d3.select(this).property('value');
+
+        // array to hold new data
+        var newData = [];
+
+        // if all just plot whole state
+        if(selected == "ALL"){
+            enterPlot(formattedData[active_index]);
+            return;
+        }
+
+        // run through state and find breaches only of selected type
+        // add that to array
+        for(var i=0;i<formattedData[active_index].length;i++){
+            if(selected == formattedData[active_index][i].Breach_Type)
+                newData.push(formattedData[active_index][i]);
+        }
+
+        // send new array to be plotted
+        enterPlot(newData);
+    };
+
+    // create dropdown
+    var dropdown = d3.select("#chart-area")
+        .insert("select", "svg")
+        .on("change", dropdownChange);
+
+    // add the all option
+    dropdown.append("option")
+        .attr("value","ALL")
+        .text("ALL");
+
+    // add options for types of breaches
+    dropdown.selectAll("option")
+        .data(differentBreaches)
+        .enter().append("option")
+        .attr("value", function (d) { return d; })
+        .text(function (d) { return d; });
+
+
+    // checks for hover and display amount of breaches
     $(document).ready(function () {
         //index of state
 

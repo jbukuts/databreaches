@@ -66,8 +66,6 @@
 			.attrTween("transform", function(d, i, a) {
         		return d3.interpolateString(a, 'scale(.7)');
     		});
-
-
 	}
 	this.uStates=uStates;
 })();
