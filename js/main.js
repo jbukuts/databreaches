@@ -1,92 +1,3 @@
-d3.csv("data/data_breaches.csv").then(function(data){
-	
-	console.log(data);
-	// see the json loaded
-	console.log(states_file);
-
-	// create array to house how many breaches occurred in each state
-	var states_amount  = [];
-	for(var i = 0; i<51;i++){
-		states_amount.push(0);
-	}
-
-	// run through all data
-	for (var i=0; i < data.length; i++) {
-		// run though all the states and check for proper state
-		for (var j=0; j < states_file.length; j++) {
-			// if state is found then increment its place in array
-			if (data[i].State == states_file[j].name) {
-				states_amount[j] += 1;
-			}
-		}
-	}
-
-	console.log(states_amount);
-
-	// draw the US in this svg id
-	uStates.draw("#statesvg");
-
-	// min and max amount of breaches per state
-	var min = Math.min(...states_amount);
-	var max = Math.max(...states_amount);
-
-	// log them
-	// console.log(min+", "+max);
-
-	// this defines the color range
-	var color = d3.scaleLog()
-    	.domain([min, max])
-    	.range(["#dbdbdb", "#af2b2b"]);
-
-	//sets the color of each state
-	for(var i=0;i<states_amount.length;i++){
-		var curr = states_file[i].name;
-
-		//console.log(states_file[i].name + ": "+  color(states_amount[i]));
-		$("[id='"+curr+"']").css('fill',color(states_amount[i]));
-	}
-
-	// displays the total amount of breaches
-	$("#breach-amount").text("there were " + data.length + " total breaches");
-	
-	// checks for hover and display amount of breaches
-	$(document).ready(function(){
- 		$(".state").hover(function(){
- 			// index in array of state
- 			var index = states_file.findIndex(x => x.name==this.id);
-    		
-    		// console.log(this.id + ": " + states_amount[index]);
-    		// bring tooltip to view
-    		d3.select("#tooltip").transition().duration(200).style("opacity", .9);  
-
-    		// change text in tooltip
-    		d3.select("#tooltip").html(tooltipHtml(this.id, states_amount[index]))  
-				.style("left", (event.pageX) + "px")     
-				.style("top", (event.pageY - 28) + "px");
-    	}, function(){
-    		// set tooltip back to 0 opacity
-    		d3.select("#tooltip").transition().duration(500).style("opacity", 0); 
-  		});
-	});
-
-	// upon clicking a state time to show some stuff
-	$(".state").click(function() {
-  		$("#depth").html(inDepth(this.id));
-
-  		console.log(this.id);
-
-  		var display_data = {};
-  		for(var i=0;i<data.length;i++){
-  			console.log(data[i].State);
-  		}
-	});
-});
-
-function inDepth(state){
-	return "<p>"+state+"</p>";
-}
-
-
 var margin = {left: 80, right: 20, top: 50, bottom: 100};
 var height = 450 - margin.top - margin.bottom,
     width = 700 - margin.left - margin.right;
@@ -115,7 +26,6 @@ d3.json("data/data.json").then(function (data) {
 
     // check new data
     console.log(formattedData);
-
 
     // create array to house how many breaches occurred in each state
     var states_amount = [];
@@ -464,11 +374,9 @@ d3.json("data/data.json").then(function (data) {
             recordsLost += data[index].Breaches[i].Total_Records;
         }
        
-        $("#records-lost").text("In "+data[index].State+" There Were "+recordsLost+" Records Lost");
-        $("#breaches-total").text("With a Total of "+data[index].Breaches.length+" Breaches");
+        $("#records-lost").text("In "+data[index].State+" There Were "+recordsLost+" Records Lost").digits();
+        $("#breaches-total").text("With a Total of "+data[index].Breaches.length+" Breaches").digits();
 
-        $("#records-lost").digits();
-        $("#breaches-total").digits();
     }
 });
 
