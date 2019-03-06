@@ -1,3 +1,4 @@
+// margins for the svg
 var margin = {left: 80, right: 20, top: 50, bottom: 100};
 var height = 500 - margin.top - margin.bottom,
     width = 800 - margin.left - margin.right;
@@ -327,7 +328,6 @@ console.log(d3.schemeCategory10)
             });
     }
 
-
     // checks for hover and display amount of breaches
     $(document).ready(function () {
         //index of state
@@ -356,6 +356,7 @@ console.log(d3.schemeCategory10)
                 enterPlot(formattedData[index])
             }
 
+            // change title of the graph
             changeText(index);
             $('html, body').animate({
                 scrollTop: ($('#chart-area').offset().top)
@@ -363,23 +364,7 @@ console.log(d3.schemeCategory10)
         });
     });
 
-    //changes text for breach amount and records lost
-    /*    function changeText(index){
-            var recordsLost = 0;
-            for(var i=0;i<data[index].Breaches.length;i++){
-                recordsLost += data[index].Breaches[i].Total_Records;
-            }
-
-            $("#records-lost").text("In "+data[index].State+" There Were "+recordsLost+" Records Lost");
-            $("#breaches-total").text("With a Total of "+data[index].Breaches.length+" Breaches");
-
-            $("#records-lost").digits();
-            $("#breaches-total").digits();
-
-
-        }*/
-
-
+    // changes text in the title of the scatterplot
     function changeText(state) {
         var recordsLost = 0;
         for (var i = 0; i < state.length; i++) {
@@ -389,20 +374,17 @@ console.log(d3.schemeCategory10)
         return data[active_index].State + " - Records Exposed: " + d3.format(",")(Math.floor(recordsLost)) + " - Breaches: " + state.length
     }
 
-// sourced from https://codepen.io/tarsusi/pen/reovOV
-
-        d3.select("select")
-            .on("change", function (d) {
-                active_scheme = selected = d3.select("#d3-dropdown").node().value;
-                console.log(active_scheme)
-                g.selectAll("circle")
-                    .attr("fill", function (s) {
-                        return typeColor[active_scheme](s.Breach_Type)
-                    })
-            })
-
-
-
+    // sourced from https://codepen.io/tarsusi/pen/reovOV
+    // on change of the dropdown
+    d3.select("select")
+        .on("change", function (d) {
+            active_scheme = selected = d3.select("#d3-dropdown").node().value;
+            console.log(active_scheme)
+            g.selectAll("circle")
+                .attr("fill", function (s) {
+                    return typeColor[active_scheme](s.Breach_Type)
+                })
+        })
 });
 
 // simple fucntion to add tooltip and display breaches
@@ -411,16 +393,4 @@ function tooltipHtml(n, d) {
         "<tr><td>Breaches: </td><td>" + (d) + "</td></tr>" +
         "</table>";
 }
-
-// Thanks @Paul Creasey for the regex
-$.fn.digits = function () {
-    return this.each(function () {
-        $(this).text($(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
-    })
-}
-
-
-
-
-
 

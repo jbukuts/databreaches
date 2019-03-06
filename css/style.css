@@ -1,6 +1,5 @@
 /** general styling **/
 body {
-	
 	font-family: Arial;
 	text-align: center;
 }
@@ -27,10 +26,6 @@ h1 {
 	margin-top: 15px;
 }
 
-h2 {
-	margin-bottom: 20px;
-}
-
 /** description of data and source **/
 #description {
 	font-size: 18px;
@@ -45,23 +40,11 @@ h2 {
 	text-align: center;
 	font-weight: bold;
 	margin-top: 30px;
+	margin-bottom: 20px;
 }
 
-/** randoms reasons for breaches **/
-#reason {
-	font-size: 18px;
-	width: 50%;
-	margin: auto;
-	margin-top: 50px;
-	font-style: italic;
-}
-
-
-
+/** states map **/
 #map-viz {
-
-	/*margin: auto;*/
-
 	display: inline-block;
 	float: left;
 }
@@ -77,6 +60,7 @@ h2 {
 	stroke-width: 1;
 }
 
+/** on state hover change opacity **/
 .state:hover {
 	opacity: .80;
 }
@@ -88,12 +72,14 @@ h2 {
 	width: 25%;
 }
 
+/** title in map legend **/
 #legend h4 {
 	text-align: center;
 	margin-top: 0px;
 
 }
 
+/** map legend gradient **/
 #legend-grad {
 	width: 100px;
 	height: 24px;
@@ -102,6 +88,7 @@ h2 {
   	margin-top: 5px;
 }
 
+/** text in map legend **/
 #legend p {
 	text-align: center;
 	margin-top: 5px;
@@ -135,30 +122,16 @@ h2 {
     pointer-events: none;
 }
 
+/** dropdown for scatterplot **/
 #dropdown{
-margin-left: 55%
+	margin-left: 55%
 }
 
+/** scatterplot **/
 #chart-area {
-
 	display: inline-block;
-
 }
 
-#chart-area div {
-	padding: 5px;
-	margin-left: 0;
-	display: inline-block;
-	float: right;
-
-}
-
-
-#records-lost, #breaches-total {
-	text-align: left;
-	font-size: 25px;
-	font-weight: bold;
-}
 
 
 
