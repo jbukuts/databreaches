@@ -12,9 +12,10 @@
 
 <body>
 
-<div id="house">
-	<!-- Main title and description -->
+    <!-- Main title and description -->
     <h1>Chronology of Data Breaches</h1>
+    <h2 id="breach-amount"></h2>
+
 
     <p id="description">All of the data in this visual is courtesy of Privacy Rights Clearinghouse. Privacy Rights Clearinghouse is a California based non-profit corporation with a two-part mission - consumer information and consumer advocacy. The data displayed here spans over the time of 2009 to 2018 and includes only breaches that occured within the United States.</p>
 
@@ -23,18 +24,14 @@
 
 	<p id="reason"></p>
 
-    <div id="map-viz">
-        <h2>Amount of Breaches in Each State From 2004 to 2018</h2>
-        <svg width="960" height="600" id="statesvg"></svg> <!-- svg to hold the map. -->
-        <div id="tooltip"></div><!-- div to hold tooltip. -->
+<div id="house">
+    <!-- map of the us-->
 
-        <div id="legend">
-            <h4>LEGEND</h4>
-            <div id="legend-grad"></div>
-            <p>darker means more</p>
-        </div>
-        
+    <div id="map-viz">
+        <!-- title -->
+        <div id="tooltip"></div><!-- div to hold tooltip. -->
     </div>
+
 
     <div id="depth">
         <p id="total"></p>
@@ -42,6 +39,14 @@
     </div>
     
 
+
+    <!-- scatter plot -->
+    <div id="chart-area">
+        <!--<div>
+            <p id="records-lost"></p>
+            <p id="breaches-total"></p>
+        </div>-->
+    </div>
 </div>
 
 <!-- External JS libraries -->
@@ -51,6 +56,7 @@
 
 <!-- Custom JS -->
 <script src="js/main.js"></script>
+
 
 </body>
 </html>
