@@ -1,7 +1,7 @@
 
 var margin = {left: 80, right: 20, top: 50, bottom: 100};
-var height = 500 - margin.top - margin.bottom,
-    width = 800 - margin.left - margin.right;
+var height = 450 - margin.top - margin.bottom,
+    width = 700 - margin.left - margin.right;
 
 // Define the div for the tooltip
 var div = d3.select("body").append("div")   
@@ -43,8 +43,45 @@ d3.json("data/data.json").then(function (data) {
     console.log(states_amount);
     console.log(data);
 
+    // svg for map
+    var map = d3.select("#map-viz")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .attr("id","states-map")
+        .append("g")
+        .attr("transform", "translate(" + margin.left +
+            ", " + margin.top + ")");
+
     // draw the US in this svg id
-    uStates.draw("#statesvg");
+    uStates.draw("#states-map");
+
+    // adds the title for the chart
+    map.append("text")
+        .attr("class", "title")
+        .attr("x", (width / 2))
+        .attr("y", 0 - (margin.top / 2))
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .style("font-weight", "bold")
+        .text("Amount of Breaches In Each State From 2004 to 2018");
+
+    // add the legend   
+    var mapLengend = map.append('g')
+      .attr("class", "legend")
+      .attr("x", 0)
+      .attr("y", 25)
+      .attr("height", 100)
+      .attr("width", 100);
+
+    mapLengend.selectAll('.legend')
+        .append("rect")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("width", 200)
+        .attr("height", 25)
+        .style("fill", "red");
+
 
     // min and max amount of breaches per state
     var min = Math.min(...states_amount);
@@ -70,7 +107,7 @@ d3.json("data/data.json").then(function (data) {
         tot += formattedData[i].length;
 
     // displays the total amount of breaches
-    $("#breach-amount").text("During this time there were " + tot + " total breaches");
+    $("#breach-amount").text("From 2004 to 2018 There Were " + tot + " Total Breaches");
     
     //keeps track of which state is plotted
     //Starts at 41 for South Carolina
@@ -107,7 +144,7 @@ d3.json("data/data.json").then(function (data) {
     var yLabel = g.append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", -40)
-        .attr("x", -170)
+        .attr("x", -(height/2))
         .attr("font-size", "20px")
         .attr("text-anchor", "middle")
         .text("Number of Records")
@@ -124,7 +161,7 @@ d3.json("data/data.json").then(function (data) {
       .attr("width", 100);
 
     // array of different breach types 
-    var differentBreaches = ["DISC","PORT","INSD","STAT","PHYS","HACK"];
+    var differentBreaches = ["DISC","PORT","INSD","STAT","PHYS","HACK","CARD"];
 
     // rectangles for legend
     legend.selectAll('g')

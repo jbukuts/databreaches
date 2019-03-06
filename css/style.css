@@ -13,11 +13,10 @@ svg {
 
 /** contaniner for all elements **/
 #house {
-	width: 80%;
 	padding: 5px;
 	background: white;
 	margin: auto;
-	margin-top: 50px;
+	margin-top: 50px;	
 }
 
 /** overall title **/
@@ -25,18 +24,6 @@ h1 {
 	font-size: 50px;
 	font-weight: bold;
 	margin-top: 32px;
-}
-
-h2 {
-	margin-bottom: 30px;
-}
-
-/** description of data and source **/
-#description {
-	font-size: 20px;
-	width: 60%;
-	margin: auto;
-	margin-top: 35px;
 }
 
 /** shows total amount of breaches **/
@@ -47,25 +34,24 @@ h2 {
 	margin-top: 30px;
 }
 
-/** randoms reasons for breaches **/
-#reason {
-	font-size: 18px;
-	width: 50%;
-	margin: auto;
-	margin-top: 50px;
-	font-style: italic;
-}
-
-
 
 #map-viz {
-	
+	display: inline;
+	width: 50%;
+	float: left;
+	margin: auto;
+}
+
+#chart-area {
+	width: 50%;
+	display: inline;
+	float: right;
 	margin: auto;
 }
 
 #map-viz h2 {
 	font-weight: bold;
-	margin-top: 100px;
+	margin-top: 50px;
 }
 
 /** styling for states **/
@@ -78,15 +64,6 @@ h2 {
 	opacity: .80;
 }
 
-#legend {
-	margin-left: auto;
-	width: 25%;
-}
-
-#legend h4 {
-	text-align: center;
-	
-}
 
 #legend-grad {
 	width: 100px;
@@ -108,10 +85,9 @@ h2 {
 	padding: 20px;             
 	margin: 10px;
 	font-size: 12px;        
-	background: black;   
 	border: 1px;               
 	pointer-events: none;         
-	background:rgba(0,0,0,1);
+	background:rgba(0,0,0,.85);
 	font-size:12px;
 	width:auto;
 	padding:4px;
@@ -121,30 +97,25 @@ h2 {
 
 .tooltip {	
     position: absolute;			
-    text-align: center;			
-    width: 60px;					
-    height: 60px;					
+    text-align: center;				
     padding: 2px;					
-    background: #dbdbdb;			
-    pointer-events: none;			
+    background:rgba(0,0,0,.85);			
+    pointer-events: none;	
+    color:white;	
+    padding: 2px;	
 }
 
-#chart-area {
-	width: 80%;
-	margin: auto;
-}
+
 
 #chart-area div {
 	padding: 5px;
-	margin-left: 0;
-
 }
 
 
 #records-lost, #breaches-total {
-	text-align: left;
-	font-size: 25px;
+	font-size: 15px;
 	font-weight: bold;
+	margin-right: 0;
 }
 
 
