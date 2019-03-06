@@ -108,17 +108,16 @@ h2 {
 	margin-bottom: 0px;
 }
 
-
+/** tooltop for map **/
 #tooltip {
 	position: absolute;
 	text-align: center;
 	padding: 20px;
 	margin: 10px;
 	font-size: 12px;
-	background: black;
 	border: 1px;
 	pointer-events: none;
-	background:rgba(0,0,0,1);
+	background:rgba(0,0,0,.9);
 	font-size:12px;
 	width:auto;
 	padding:4px;
@@ -126,13 +125,13 @@ h2 {
 	opacity: 0;
 }
 
+/** tooltip for scatterplot **/
 .tooltip {
     position: absolute;
     text-align: center;
-    width: 60px;
-    height: 60px;
-    padding: 2px;
-    background: #dbdbdb;
+    padding: 3px;
+    color:white;
+    background:rgba(0,0,0,.9);
     pointer-events: none;
 }
 

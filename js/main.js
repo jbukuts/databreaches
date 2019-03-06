@@ -394,7 +394,7 @@ console.log(d3.schemeCategory10)
         d3.select("select")
             .on("change", function (d) {
                 active_scheme = selected = d3.select("#d3-dropdown").node().value;
-console.log(active_scheme)
+                console.log(active_scheme)
                 g.selectAll("circle")
                     .attr("fill", function (s) {
                         return typeColor[active_scheme](s.Breach_Type)
