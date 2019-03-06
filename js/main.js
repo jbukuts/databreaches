@@ -1,4 +1,3 @@
-// margins for the svg
 var margin = {left: 80, right: 20, top: 50, bottom: 100};
 var height = 500 - margin.top - margin.bottom,
     width = 800 - margin.left - margin.right;
@@ -69,7 +68,7 @@ d3.json("data/data.json").then(function (data) {
         tot += formattedData[i].length;
 
     // displays the total amount of breaches
-    $("#breach-amount").text("During this time there were " + tot + " total breaches");
+    $("#breach-amount").text("During this time there were " + tot + " total breaches").digits();
 
     //keeps track of which state is plotted
     //Starts at 40 for South Carolina
@@ -328,6 +327,7 @@ console.log(d3.schemeCategory10)
             });
     }
 
+
     // checks for hover and display amount of breaches
     $(document).ready(function () {
         //index of state
@@ -393,4 +393,16 @@ function tooltipHtml(n, d) {
         "<tr><td>Breaches: </td><td>" + (d) + "</td></tr>" +
         "</table>";
 }
+
+// Thanks @Paul Creasey for the regex
+$.fn.digits = function () {
+    return this.each(function () {
+        $(this).text($(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
+    })
+}
+
+
+
+
+
 
