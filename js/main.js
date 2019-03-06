@@ -116,14 +116,15 @@ d3.json("data/data.json").then(function (data) {
 
     // determines color of the dot on graph
     var typeColor = []
-    typeColor[0] = d3.scaleOrdinal(["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b"]);
-    typeColor[1] = d3.scaleOrdinal(["#1f77b4", "#ff7f0e00", "#2ca02c00", "#d6272800", "#9467bd00", "#8c564b00"]);
-    typeColor[2] = d3.scaleOrdinal(["#1f77b400", "#ff7f0e", "#2ca02c00", "#d6272800", "#9467bd00", "#8c564b00"]);
-    typeColor[3] = d3.scaleOrdinal(["#1f77b400", "#ff7f0e00", "#2ca02c", "#d6272800", "#9467bd00", "#8c564b00"]);
-    typeColor[4] = d3.scaleOrdinal(["#1f77b400", "#ff7f0e00", "#2ca02c00", "#d62728", "#9467bd00", "#8c564b00"]);
-    typeColor[5] = d3.scaleOrdinal(["#1f77b400", "#ff7f0e00", "#2ca02c00", "#d6272800", "#9467bd", "#8c564b00"]);
-    typeColor[6] = d3.scaleOrdinal(["#1f77b400", "#ff7f0e00", "#2ca02c00", "#d6272800", "#9467bd00", "#8c564b"]);
-
+    typeColor[0] = d3.scaleOrdinal(["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2"]);
+    typeColor[1] = d3.scaleOrdinal(["#1f77b4", "#ff7f0e00", "#2ca02c00", "#d6272800", "#9467bd00", "#8c564b00", "#e377c200"]);
+    typeColor[2] = d3.scaleOrdinal(["#1f77b400", "#ff7f0e", "#2ca02c00", "#d6272800", "#9467bd00", "#8c564b00", "#e377c200"]);
+    typeColor[3] = d3.scaleOrdinal(["#1f77b400", "#ff7f0e00", "#2ca02c", "#d6272800", "#9467bd00", "#8c564b00", "#e377c200"]);
+    typeColor[4] = d3.scaleOrdinal(["#1f77b400", "#ff7f0e00", "#2ca02c00", "#d62728", "#9467bd00", "#8c564b00", "#e377c200"]);
+    typeColor[5] = d3.scaleOrdinal(["#1f77b400", "#ff7f0e00", "#2ca02c00", "#d6272800", "#9467bd", "#8c564b00", "#e377c200"]);
+    typeColor[6] = d3.scaleOrdinal(["#1f77b400", "#ff7f0e00", "#2ca02c00", "#d6272800", "#9467bd00", "#8c564b", "#e377c200"]);
+    typeColor[7] = d3.scaleOrdinal(["#1f77b400", "#ff7f0e00", "#2ca02c00", "#d6272800", "#9467bd00", "#8c564b00", "#e377c2"]);
+console.log(d3.schemeCategory10)
 
     // add the legend
     var legend = g.append("g")
@@ -134,7 +135,7 @@ d3.json("data/data.json").then(function (data) {
         .attr("width", 100);
 
     // array of different breach types 
-    var differentBreaches = ["DISC", "PORT", "INSD", "STAT", "PHYS", "HACK"];
+    var differentBreaches = ["DISC", "PORT", "INSD", "STAT", "PHYS", "HACK", "CARD"];
 
     // rectangles for legend
     legend.selectAll('g')
