@@ -27,7 +27,6 @@ d3.json("data/data.json").then(function (data) {
     // check new data
     console.log(formattedData);
 
-
     // create array to house how many breaches occurred in each state
     var states_amount = [];
     for (var i = 0; i < 51; i++) {
@@ -135,7 +134,9 @@ console.log(d3.schemeCategory10)
         .attr("width", 100);
 
     // array of different breach types 
+
     var differentBreaches = ["DISC", "PORT", "INSD", "STAT", "PHYS", "HACK", "CARD"];
+    var breachNames = ["Unintended Disclosure","Portable Device","Insider","Stationary Device","Physical Loss","Hacking","Card Fraud"];
 
     // rectangles for legend
     legend.selectAll('g')
@@ -326,6 +327,7 @@ console.log(d3.schemeCategory10)
             });
     }
 
+
     // checks for hover and display amount of breaches
     $(document).ready(function () {
         //index of state
@@ -383,8 +385,8 @@ console.log(d3.schemeCategory10)
         for (var i = 0; i < state.length; i++) {
             recordsLost += state[i].Total_Records;
         }
-        return data[active_index].State + " - Records Exposed: " + d3.format(",")(Math.floor(recordsLost)) + " - Breaches: " + state.length
 
+        return data[active_index].State + " - Records Exposed: " + d3.format(",")(Math.floor(recordsLost)) + " - Breaches: " + state.length
     }
 
 // sourced from https://codepen.io/tarsusi/pen/reovOV
