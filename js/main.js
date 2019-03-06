@@ -1,8 +1,6 @@
 d3.csv("data/data_breaches.csv").then(function(data){
 	
 	console.log(data);
-	// see the json loaded
-	console.log(states_file);
 
 	// create array to house how many breaches occurred in each state
 	var states_amount  = [];
