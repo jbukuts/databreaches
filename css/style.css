@@ -1,6 +1,6 @@
 /** general styling **/
 body {
-	background-color: #f9f9f9;
+	
 	font-family: Arial;
 	text-align: center;
 }
@@ -13,12 +13,10 @@ svg {
 
 /** contaniner for all elements **/
 #house {
-	width: 65%;
 	padding: 5px;
 	background: white;
 	margin: auto;
-	margin-top: 50px;
-	box-shadow: 10px 10px;
+	margin-top: 50px;	
 }
 
 /** overall title **/
@@ -28,48 +26,32 @@ h1 {
 	margin-top: 32px;
 }
 
-/** description of data and source **/
-#description {
-	font-size: 20px;
-	width: 50%;
-	margin: auto;
-	margin-top: 24px;
-}
-
 /** shows total amount of breaches **/
-#breach-title {
-	font-size: 42px;
-	text-align: center;
-	font-weight: bold;
-	margin-top: 50px;
-}
-
 #breach-amount {
 	font-size: 42px;
 	text-align: center;
 	font-weight: bold;
-	margin-top: -20px;
+	margin-top: 30px;
 }
-
-/** randoms reasons for breaches **/
-#reason {
-	font-size: 18px;
-	width: 50%;
-	margin: auto;
-	margin-top: 50px;
-	font-style: italic;
-}
-
 
 
 #map-viz {
-	
+	display: inline;
+	width: 50%;
+	float: left;
+	margin: auto;
+}
+
+#chart-area {
+	width: 50%;
+	display: inline;
+	float: right;
 	margin: auto;
 }
 
 #map-viz h2 {
 	font-weight: bold;
-	margin-top: 100px;
+	margin-top: 50px;
 }
 
 /** styling for states **/
@@ -82,15 +64,6 @@ h1 {
 	opacity: .80;
 }
 
-#legend {
-	margin-left: auto;
-	width: 25%;
-}
-
-#legend h4 {
-	text-align: center;
-	
-}
 
 #legend-grad {
 	width: 100px;
@@ -112,14 +85,37 @@ h1 {
 	padding: 20px;             
 	margin: 10px;
 	font-size: 12px;        
-	background: black;   
 	border: 1px;               
 	pointer-events: none;         
-	background:rgba(0,0,0,1);
+	background:rgba(0,0,0,.85);
 	font-size:12px;
 	width:auto;
 	padding:4px;
 	color:white;
 	opacity: 0;
-	
 }
+
+.tooltip {	
+    position: absolute;			
+    text-align: center;				
+    padding: 2px;					
+    background:rgba(0,0,0,.85);			
+    pointer-events: none;	
+    color:white;	
+    padding: 2px;	
+}
+
+
+
+#chart-area div {
+	padding: 5px;
+}
+
+
+#records-lost, #breaches-total {
+	font-size: 15px;
+	font-weight: bold;
+	margin-right: 0;
+}
+
+
